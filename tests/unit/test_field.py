@@ -2,7 +2,7 @@ from experta.fact import BaseField, Field
 
 
 def test_basefield_interface():
-    assert BaseField.__abstractmethods__ == {'validate'}
+    assert BaseField.__abstractmethods__ == {"validate"}
 
 
 def test_field_validator_is_Schema():

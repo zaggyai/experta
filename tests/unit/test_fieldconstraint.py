@@ -3,17 +3,12 @@ import pytest
 
 def test_fieldconstraint_exist():
     try:
-        from experta import fieldconstraint
+        from experta import fieldconstraint  # noqa: F401
     except ImportError as exc:
         assert False, exc
 
 
-@pytest.mark.parametrize("name", ["L",
-                                  "W",
-                                  "P",
-                                  "ANDFC",
-                                  "ORFC",
-                                  "NOTFC"])
+@pytest.mark.parametrize("name", ["L", "W", "P", "ANDFC", "ORFC", "NOTFC"])
 def test_existence_of_field_constraints(name):
     from experta import fieldconstraint
 

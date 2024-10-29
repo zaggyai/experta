@@ -40,11 +40,11 @@ def test_Rule_can_decorate_function_with_multiple_positional_args():
     def myfunction(x, y, z):
         nonlocal called
         called = True
-        assert x == 'x'
-        assert y == 'y'
-        assert z == 'z'
+        assert x == "x"
+        assert y == "y"
+        assert z == "z"
 
-    myfunction('x', 'y', 'z')
+    myfunction("x", "y", "z")
     assert called
 
 
@@ -57,18 +57,19 @@ def test_Rule_can_decorate_function_with_mixed_args():
     def myfunction(x, y, z=None, a=None):
         nonlocal called
         called = True
-        assert x == 'x'
-        assert y == 'y'
+        assert x == "x"
+        assert y == "y"
         assert z is None
-        assert a == 'a'
+        assert a == "a"
 
-    myfunction('x', 'y', a='a')
+    myfunction("x", "y", a="a")
 
     assert called
 
 
 def test_Rule_decorated_function_raise_TypeError_on_bad_arguments():
     from experta import Rule
+
     # pylint: disable=unused-argument, no-value-for-parameter
 
     called = False
@@ -167,12 +168,12 @@ def test_Rule_can_decorate_method_with_multiple_positional_args():
         def mymethod(self, x, y, z):
             nonlocal called
             called = True
-            assert x == 'x'
-            assert y == 'y'
-            assert z == 'z'
+            assert x == "x"
+            assert y == "y"
+            assert z == "z"
 
     obj = TestRule()
-    obj.mymethod('x', 'y', 'z')
+    obj.mymethod("x", "y", "z")
 
     assert called
 
@@ -187,13 +188,13 @@ def test_Rule_can_decorate_method_with_mixed_args():
         def mymethod(self, x, y, z=None, a=None):
             nonlocal called
             called = True
-            assert x == 'x'
-            assert y == 'y'
+            assert x == "x"
+            assert y == "y"
             assert z is None
-            assert a == 'a'
+            assert a == "a"
 
     obj = TestRule()
-    obj.mymethod('x', 'y', a='a')
+    obj.mymethod("x", "y", a="a")
 
     assert called
 

@@ -1,4 +1,3 @@
-from .conditionalelement import TEST
 from .fieldconstraint import W
 
 

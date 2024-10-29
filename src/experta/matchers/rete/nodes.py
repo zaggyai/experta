@@ -7,7 +7,6 @@ needed in this implementation.
 
 """
 from contextlib import suppress
-from itertools import chain
 
 from experta.activation import Activation
 from experta.rule import Rule

@@ -3,7 +3,7 @@ import pytest
 
 def test_strategies_exists():
     try:
-        from experta import strategies
+        from experta import strategies  # noqa: F401
     except ImportError as exc:
         assert False, exc
     else:
@@ -13,7 +13,7 @@ def test_strategies_exists():
 def test_Strategy_exists():
     from experta import strategies
 
-    assert hasattr(strategies, 'Strategy')
+    assert hasattr(strategies, "Strategy")
 
 
 def test_Strategy_is_class():
@@ -32,7 +32,7 @@ def test_Strategy_is_abstract():
 def test_DepthStrategy_exists():
     from experta import strategies
 
-    assert hasattr(strategies, 'DepthStrategy')
+    assert hasattr(strategies, "DepthStrategy")
 
 
 def test_DepthStrategy_is_Strategy():
@@ -43,7 +43,8 @@ def test_DepthStrategy_is_Strategy():
 
 def test_DepthStrategy_has_update_agenda():
     from experta.strategies import DepthStrategy
-    assert hasattr(DepthStrategy(), 'update_agenda')
+
+    assert hasattr(DepthStrategy(), "update_agenda")
 
 
 def test_DepthStrategy_update_agenda_no_facts_returns_empty_agenda():
@@ -72,8 +73,8 @@ def test_DepthStrategy_update_agenda_activations_to_agenda():
     f2 = Fact(2)
     fl.declare(f2)
 
-    act1 = Activation(rule=Rule(), facts=(f1, ))
-    act2 = Activation(rule=Rule(), facts=(f2, ))
+    act1 = Activation(rule=Rule(), facts=(f1,))
+    act2 = Activation(rule=Rule(), facts=(f2,))
 
     a = Agenda()
 
@@ -106,12 +107,12 @@ def test_DepthStrategy_update_agenda_assertion_order_affects_agenda_order_1():
     f4 = Fact(4)
     fl.declare(f4)
 
-    act1 = Activation(rule=Rule(), facts=(f1, ))
-    act2 = Activation(rule=Rule(), facts=(f2, ))
+    act1 = Activation(rule=Rule(), facts=(f1,))
+    act2 = Activation(rule=Rule(), facts=(f2,))
     first = [act1, act2]
 
-    act3 = Activation(rule=Rule(), facts=(f3, ))
-    act4 = Activation(rule=Rule(), facts=(f4, ))
+    act3 = Activation(rule=Rule(), facts=(f3,))
+    act4 = Activation(rule=Rule(), facts=(f4,))
     second = [act3, act4]
 
     a = Agenda()
@@ -147,12 +148,12 @@ def test_DepthStrategy_update_agenda_asertion_order_affects_agenda_order_2():
     f4 = Fact(4)
     fl.declare(f4)
 
-    act1 = Activation(rule=Rule(), facts=(f1, ))
-    act2 = Activation(rule=Rule(), facts=(f2, ))
+    act1 = Activation(rule=Rule(), facts=(f1,))
+    act2 = Activation(rule=Rule(), facts=(f2,))
     first = [act1, act2]
 
-    act3 = Activation(rule=Rule(), facts=(f3, ))
-    act4 = Activation(rule=Rule(), facts=(f4, ))
+    act3 = Activation(rule=Rule(), facts=(f3,))
+    act4 = Activation(rule=Rule(), facts=(f4,))
     second = [act3, act4]
 
     a = Agenda()
@@ -194,10 +195,10 @@ def test_DepthStrategy_update_agenda_asertion_order_affects_agenda_order_3():
     f2 = Fact(2)
     fl.declare(f2)
 
-    act1 = Activation(rule=Rule(), facts=(f1, ))
-    act2 = Activation(rule=Rule(), facts=(f1, ))
-    act3 = Activation(rule=Rule(), facts=(f2, ))
-    act4 = Activation(rule=Rule(), facts=(f2, ))
+    act1 = Activation(rule=Rule(), facts=(f1,))
+    act2 = Activation(rule=Rule(), facts=(f1,))
+    act3 = Activation(rule=Rule(), facts=(f2,))
+    act4 = Activation(rule=Rule(), facts=(f2,))
 
     a = Agenda()
 
@@ -206,10 +207,12 @@ def test_DepthStrategy_update_agenda_asertion_order_affects_agenda_order_3():
     st.update_agenda(a, [act1, act2, act3, act4], [])
     order = list(a.activations)
 
-    assert (order.index(act4) > order.index(act1)
-            and order.index(act4) > order.index(act2))
-    assert (order.index(act3) > order.index(act1)
-            and order.index(act3) > order.index(act2))
+    assert order.index(act4) > order.index(act1) and order.index(
+        act4
+    ) > order.index(act2)
+    assert order.index(act3) > order.index(act1) and order.index(
+        act3
+    ) > order.index(act2)
 
 
 def test_DepthStrategy_update_agenda_different_salience():
@@ -236,10 +239,10 @@ def test_DepthStrategy_update_agenda_different_salience():
     f4 = Fact(4)
     flist.declare(f4)
 
-    act1 = Activation(rule=Rule(salience=1), facts=(f1, ))
-    act2 = Activation(rule=Rule(salience=2), facts=(f2, ))
-    act3 = Activation(rule=Rule(salience=3), facts=(f3, ))
-    act4 = Activation(rule=Rule(salience=4), facts=(f4, ))
+    act1 = Activation(rule=Rule(salience=1), facts=(f1,))
+    act2 = Activation(rule=Rule(salience=2), facts=(f2,))
+    act3 = Activation(rule=Rule(salience=3), facts=(f3,))
+    act4 = Activation(rule=Rule(salience=4), facts=(f4,))
 
     acts = [act1, act2, act3, act4]
     shuffle(acts)
@@ -251,7 +254,9 @@ def test_DepthStrategy_update_agenda_different_salience():
         st.update_agenda(a, acts, [])
 
     order = list(a.activations)
-    assert (order.index(act4)
-            > order.index(act3)
-            > order.index(act2)
-            > order.index(act1))
+    assert (
+        order.index(act4)
+        > order.index(act3)
+        > order.index(act2)
+        > order.index(act1)
+    )

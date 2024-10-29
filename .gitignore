@@ -66,3 +66,6 @@ target/
 .pytest_cache
 
 Pipfile.lock
+
+# PyCharm cruft
+.idea/

@@ -1,17 +1,17 @@
-import pytest
-
-from hypothesis import strategies as st
-from hypothesis import assume, settings
-from hypothesis.database import DirectoryBasedExampleDatabase
-from hypothesis.stateful import Bundle, RuleBasedStateMachine, rule, invariant, consumes
-
 from experta.activation import Activation
 from experta.agenda import Agenda
-from experta.engine import KnowledgeEngine
 from experta.fact import Fact
-from experta.factlist import FactList
 from experta.rule import Rule
 from experta.strategies import DepthStrategy
+from hypothesis import assume
+from hypothesis import strategies as st
+from hypothesis.stateful import (
+    Bundle,
+    RuleBasedStateMachine,
+    rule,
+    invariant,
+    consumes,
+)
 
 
 def get_rule_stm(strategy):
@@ -25,9 +25,11 @@ def get_rule_stm(strategy):
 
         activations = Bundle("activations")
 
-        @rule(target=activations,
-              r=st.integers(min_value=0),
-              fs=st.sets(st.integers(min_value=0), min_size=1))
+        @rule(
+            target=activations,
+            r=st.integers(min_value=0),
+            fs=st.sets(st.integers(min_value=0), min_size=1),
+        )
         def declare(self, r, fs):
             assume((r, frozenset(fs)) not in self.fss)
             self.fss.add((r, frozenset(fs)))

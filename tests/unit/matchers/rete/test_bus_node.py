@@ -1,9 +1,6 @@
-import pytest
-
-
 def test_busnode_exists():
     try:
-        from experta.matchers.rete.nodes import BusNode
+        from experta.matchers.rete.nodes import BusNode  # noqa: F401
     except ImportError as exc:
         assert False, exc
 
@@ -18,13 +15,12 @@ def test_busnode_is_node():
 def test_busnode_interface():
     from experta.matchers.rete.nodes import BusNode
 
-    assert hasattr(BusNode, 'add')
-    assert hasattr(BusNode, 'remove')
+    assert hasattr(BusNode, "add")
+    assert hasattr(BusNode, "remove")
 
 
 def test_busnode_add_child(TestNode):
     from experta.matchers.rete.nodes import BusNode
-    from experta.fact import Fact
 
     bn = BusNode()
     tn = TestNode()

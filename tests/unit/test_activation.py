@@ -4,14 +4,15 @@ Tests regarding activation object.
 
 
 def test_activation_has_facts():
-    """ Check if activation has facts property """
+    """Check if activation has facts property"""
     from experta.activation import Activation
     from experta import Rule
-    assert hasattr(Activation(rule=Rule(), facts=[]), 'facts')
+
+    assert hasattr(Activation(rule=Rule(), facts=[]), "facts")
 
 
 def test_activation_facts_only_iterable():
-    """ Check if activation facts are required to be a tuple """
+    """Check if activation facts are required to be a tuple"""
     from experta.activation import Activation
     from experta import Rule
     import pytest

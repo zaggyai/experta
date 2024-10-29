@@ -1,6 +1,5 @@
 from collections import namedtuple
 from functools import singledispatch
-import dis
 import inspect
 
 from experta.fieldconstraint import FieldConstraint
@@ -28,7 +27,7 @@ class TypeCheck(Check, namedtuple('_TypeCheck', ['fact_type'])):
         return cls._instances[fact_type]
 
     def __call__(self, fact):
-        res = type(fact) == self.fact_type
+        res = isinstance(fact, self.fact_type)
 
         log = MATCH.info if res else MATCH.debug
         log("type(%s) == %s = %r",
