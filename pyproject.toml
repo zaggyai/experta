@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "experta"
-version = "1.9.4"
+version = "2.0.0"
 authors = [
   { name="Robert Bates", email="rbates@zaggy.ai" },
   { name="Roberto Abdelkader Martínez Pérez", email="robertomartinezp@gmail.com" },
