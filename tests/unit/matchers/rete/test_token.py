@@ -7,17 +7,17 @@ def test_token_is_namedtuple():
     from experta.matchers.rete.token import Token
 
     assert issubclass(Token, tuple)
-    assert 'tag' in Token._fields
-    assert 'data' in Token._fields
-    assert 'context' in Token._fields
+    assert "tag" in Token._fields
+    assert "data" in Token._fields
+    assert "context" in Token._fields
 
 
 def test_token_tagtype():
     from experta.matchers.rete.token import Token
 
     assert issubclass(Token.TagType, Enum)
-    assert hasattr(Token.TagType, 'VALID')
-    assert hasattr(Token.TagType, 'INVALID')
+    assert hasattr(Token.TagType, "VALID")
+    assert hasattr(Token.TagType, "INVALID")
 
 
 def test_token_initialization_types():

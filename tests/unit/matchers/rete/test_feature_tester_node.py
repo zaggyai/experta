@@ -3,7 +3,7 @@ import pytest
 
 def test_featuretesternode_exists():
     try:
-        from experta.matchers.rete.nodes import FeatureTesterNode
+        from experta.matchers.rete.nodes import FeatureTesterNode  # noqa: F401
     except ImportError as exc:
         assert False, exc
 
@@ -22,7 +22,7 @@ def test_featuretesternode_accepts_callable():
     FeatureTesterNode(lambda x: True)
 
     with pytest.raises(TypeError):
-        FeatureTesterNode('NONCALLABLE')
+        FeatureTesterNode("NONCALLABLE")
 
 
 def test_featuretesternode_pass_when_callable_succeed(TestNode):
@@ -68,7 +68,7 @@ def test_featuretesternode_pass_when_callable_adds_context(TestNode):
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    ftn = FeatureTesterNode(lambda f: {'something': True})
+    ftn = FeatureTesterNode(lambda f: {"something": True})
     tn1 = TestNode()
     tn2 = TestNode()
 
@@ -80,7 +80,7 @@ def test_featuretesternode_pass_when_callable_adds_context(TestNode):
     ftn.activate(token)
 
     newtoken = token.copy()
-    newtoken.context['something'] = True
+    newtoken.context["something"] = True
 
     assert tn1.added == tn2.added == [newtoken]
 
@@ -90,11 +90,11 @@ def test_featuretesternode_pass_when_callable_modify_context(TestNode):
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    ftn = FeatureTesterNode(lambda f: {'something': True})
+    ftn = FeatureTesterNode(lambda f: {"something": True})
     tn1 = TestNode()
     tn2 = TestNode()
 
-    token = Token.valid(Fact(test=True), {'something': False})
+    token = Token.valid(Fact(test=True), {"something": False})
 
     ftn.add_child(tn1, tn1.activate)
     ftn.add_child(tn2, tn2.activate)
@@ -102,7 +102,7 @@ def test_featuretesternode_pass_when_callable_modify_context(TestNode):
     ftn.activate(token)
 
     newtoken = token.copy()
-    newtoken.context['something'] = True
+    newtoken.context["something"] = True
 
     assert tn1.added == tn2.added == []
 
@@ -112,11 +112,11 @@ def test_featuretesternode_pass_when_callable_dont_modify_context(TestNode):
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    ftn = FeatureTesterNode(lambda f: {'something': True})
+    ftn = FeatureTesterNode(lambda f: {"something": True})
     tn1 = TestNode()
     tn2 = TestNode()
 
-    token = Token.valid(Fact(test=True), {'something': True})
+    token = Token.valid(Fact(test=True), {"something": True})
 
     ftn.add_child(tn1, tn1.activate)
     ftn.add_child(tn2, tn2.activate)
@@ -124,7 +124,7 @@ def test_featuretesternode_pass_when_callable_dont_modify_context(TestNode):
     ftn.activate(token)
 
     newtoken = token.copy()
-    newtoken.context['something'] = True
+    newtoken.context["something"] = True
 
     assert tn1.added == tn2.added == [newtoken]
 

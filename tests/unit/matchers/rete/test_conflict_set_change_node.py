@@ -3,7 +3,7 @@ import pytest
 
 def test_conflictsetchange_exists():
     try:
-        from experta.matchers.rete.nodes import ConflictSetNode
+        from experta.matchers.rete.nodes import ConflictSetNode  # noqa: F401
     except ImportError as exc:
         assert False, exc
 
@@ -18,7 +18,7 @@ def test_conflictsetchange_is_abstractnode():
 def test_conflictsetchange_interface():
     from experta.matchers.rete.nodes import ConflictSetNode
 
-    assert hasattr(ConflictSetNode, 'get_activations')
+    assert hasattr(ConflictSetNode, "get_activations")
 
 
 def test_conflictsetchange_accepts_rule():
@@ -29,7 +29,7 @@ def test_conflictsetchange_accepts_rule():
     ConflictSetNode(Rule())
 
     with pytest.raises(TypeError):
-        ConflictSetNode('NOTARULE')
+        ConflictSetNode("NOTARULE")
 
 
 def test_conflictsetchange_valid_adds_to_memory():
@@ -40,12 +40,12 @@ def test_conflictsetchange_valid_adds_to_memory():
 
     csn = ConflictSetNode(Rule())
 
-    f = Fact(test='data')
+    f = Fact(test="data")
     f.__factid__ = 1
 
-    csn.activate(Token.valid(f, {'mycontextdata': 'data'}))
+    csn.activate(Token.valid(f, {"mycontextdata": "data"}))
 
-    assert TokenInfo([f], {'mycontextdata': 'data'}) in csn.memory
+    assert TokenInfo([f], {"mycontextdata": "data"}) in csn.memory
 
 
 def test_conflictsetchange_invalid_removes_from_memory():
@@ -56,12 +56,12 @@ def test_conflictsetchange_invalid_removes_from_memory():
 
     csn = ConflictSetNode(Rule())
 
-    f = Fact(test='data')
+    f = Fact(test="data")
     f.__factid__ = 1
 
-    csn.memory.add(TokenInfo([f], {'mycontextdata': 'data'}))
+    csn.memory.add(TokenInfo([f], {"mycontextdata": "data"}))
 
-    csn.activate(Token.invalid(f, {'mycontextdata': 'data'}))
+    csn.activate(Token.invalid(f, {"mycontextdata": "data"}))
 
     assert not csn.memory
 
@@ -78,7 +78,7 @@ def test_conflictsetchange_get_activations_data():
     f = Fact(first=1)
     f.__factid__ = 1
 
-    csn.activate(Token.valid(f, {'data': 'test'}))
+    csn.activate(Token.valid(f, {"data": "test"}))
 
     added, removed = csn.get_activations()
 
@@ -87,4 +87,4 @@ def test_conflictsetchange_get_activations_data():
 
     assert list(added)[0].rule is rule
     assert f in list(added)[0].facts
-    assert list(added)[0].context == {'data': 'test'}
+    assert list(added)[0].context == {"data": "test"}

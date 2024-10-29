@@ -1,5 +1,7 @@
 __all__ = ['AND', 'OR', 'NOT', 'TEST', 'EXISTS', 'FORALL']
 
+from itertools import chain
+
 
 class ConditionalElement(tuple):
     """Base Conditional Element"""

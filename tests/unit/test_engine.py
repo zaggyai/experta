@@ -10,8 +10,9 @@ from hypothesis import strategies as st
 
 def test_KnowledgeEngine_has__facts():
     from experta.engine import KnowledgeEngine
+
     ke = KnowledgeEngine()
-    assert hasattr(ke, 'facts')
+    assert hasattr(ke, "facts")
 
 
 def test_KnowledgeEngine__facts_is_FactList():
@@ -24,8 +25,9 @@ def test_KnowledgeEngine__facts_is_FactList():
 
 def test_KnowledgeEngine_has_declare():
     from experta.engine import KnowledgeEngine
+
     ke = KnowledgeEngine()
-    assert hasattr(ke, 'declare')
+    assert hasattr(ke, "declare")
 
 
 def test_KnowledgeEngine_declare_define_fact():
@@ -34,7 +36,7 @@ def test_KnowledgeEngine_declare_define_fact():
     from unittest.mock import patch
 
     ke = KnowledgeEngine()
-    with patch('experta.factlist.FactList') as mock:
+    with patch("experta.factlist.FactList") as mock:
         ke.facts = mock
         ke.declare(Fact())
         assert mock.declare.called
@@ -43,7 +45,7 @@ def test_KnowledgeEngine_declare_define_fact():
 def test_KnowledgeEngine_has_retract():
     from experta.engine import KnowledgeEngine
 
-    assert hasattr(KnowledgeEngine, 'retract')
+    assert hasattr(KnowledgeEngine, "retract")
 
 
 def test_KnowledgeEngine_retract_retracts_fact():
@@ -51,16 +53,17 @@ def test_KnowledgeEngine_retract_retracts_fact():
     from unittest.mock import patch
 
     ke = KnowledgeEngine()
-    with patch('experta.factlist.FactList') as mock:
+    with patch("experta.factlist.FactList") as mock:
         ke.facts = mock
-        ke.retract({'__factid__': (0, )})
+        ke.retract({"__factid__": (0,)})
         assert mock.retract.called
 
 
 def test_KnowledgeEngine_has_agenda():
     from experta.engine import KnowledgeEngine
+
     ke = KnowledgeEngine()
-    assert hasattr(ke, 'agenda')
+    assert hasattr(ke, "agenda")
 
 
 def test_KnowledgeEngine_agenda_is_Agenda():
@@ -89,7 +92,7 @@ def test_KnowledgeEngine_default_strategy_is_Depth_instance():
 def test_KnowledgeEngine_has_get_rules_property():
     from experta.engine import KnowledgeEngine
 
-    assert hasattr(KnowledgeEngine, 'get_rules')
+    assert hasattr(KnowledgeEngine, "get_rules")
 
 
 def test_KnowledgeEngine_get_rules_return_empty_list():
@@ -125,11 +128,12 @@ def test_KnowledgeEngine_get_rules_returns_the_list_of_rules():
 def test_KnowledgeEngine_get_activations_exists():
     from experta.engine import KnowledgeEngine
 
-    assert hasattr(KnowledgeEngine, 'get_activations')
+    assert hasattr(KnowledgeEngine, "get_activations")
 
 
 def test_KnowledgeEngine_get_activations_returns_a_list():
     from experta.engine import KnowledgeEngine
+
     ke = KnowledgeEngine()
 
     res = ke.get_activations()
@@ -145,9 +149,7 @@ def test_KnowledgeEngine_get_activations_returns_activations_added():
     from experta import Fact
 
     class Test(KnowledgeEngine):
-        @Rule(Fact(a=1),
-              Fact(b=1),
-              Fact(c=1))
+        @Rule(Fact(a=1), Fact(b=1), Fact(c=1))
         def test(self):
             pass
 
@@ -164,16 +166,19 @@ def test_KnowledgeEngine_get_activations_returns_activations_added():
 
 def test_KnowledgeEngine_has_run():
     from experta.engine import KnowledgeEngine
-    assert hasattr(KnowledgeEngine, 'run')
+
+    assert hasattr(KnowledgeEngine, "run")
 
 
 def test_KnowledgeEngine_has_reset():
     from experta.engine import KnowledgeEngine
-    assert hasattr(KnowledgeEngine, 'reset')
+
+    assert hasattr(KnowledgeEngine, "reset")
 
 
 def test_KnowledgeEngine_reset_resets_agenda():
     from experta.engine import KnowledgeEngine
+
     ke = KnowledgeEngine()
     ke.agenda = None
 
@@ -183,6 +188,7 @@ def test_KnowledgeEngine_reset_resets_agenda():
 
 def test_KnowledgeEngine_reset_resets_facts():
     from experta.engine import KnowledgeEngine
+
     ke = KnowledgeEngine()
     ke.facts = None
 
@@ -311,62 +317,60 @@ def test_rules_are_executed_once(to_declare_random):
             for i in to_declare:
                 yield Fact(something=i)
 
-        @Rule(Fact(something=L(1)),
-              Fact(something=L(2)))
+        @Rule(Fact(something=L(1)), Fact(something=L(2)))
         def rule1(self):
             nonlocal executions
-            executions.append('rule1')
+            executions.append("rule1")
 
         @Rule(Fact(something=L(3)))
         def rule2(self):
             nonlocal executions
-            executions.append('rule2')
+            executions.append("rule2")
 
     ke = Test()
     ke.reset()
     ke.run()
 
-    assert executions.count('rule1') == 1
-    assert executions.count('rule2') == 1
+    assert executions.count("rule1") == 1
+    assert executions.count("rule2") == 1
 
 
 def test_default_is_and():
     """
     Test that AND is the default behavior
     """
-    from collections import defaultdict
     from experta.engine import KnowledgeEngine
     from experta import Rule, DefFacts
-    from experta import Fact, L
+    from experta import Fact
 
     executions = []
 
     class Test(KnowledgeEngine):
-        """ Test KE """
+        """Test KE"""
+
         @DefFacts()
         def test_facts(self):
             for n in (1, 2, 3):
                 yield Fact(something=n)
 
-        @Rule(Fact(something=1),
-              Fact(something=2))
+        @Rule(Fact(something=1), Fact(something=2))
         def rule1(self):
-            """ First rule, something=1 and something=2"""
+            """First rule, something=1 and something=2"""
             nonlocal executions
-            executions.append('rule1')
+            executions.append("rule1")
 
         @Rule(Fact(something=3))
         def rule2(self):
-            """ Second rule, only something=3 """
+            """Second rule, only something=3"""
             nonlocal executions
-            executions.append('rule2')
+            executions.append("rule2")
 
     ke = Test()
     ke.reset()
     ke.run()
 
-    assert executions.count('rule1') == 1
-    assert executions.count('rule2') == 1
+    assert executions.count("rule1") == 1
+    assert executions.count("rule2") == 1
 
 
 def test_or_notmatching_operator():
@@ -375,19 +379,19 @@ def test_or_notmatching_operator():
     """
     from experta.engine import KnowledgeEngine
     from experta import Rule, OR, DefFacts
-    from experta import Fact, L
+    from experta import Fact
 
     class Test(KnowledgeEngine):
-        """ Test KE """
+        """Test KE"""
+
         @DefFacts()
         def some_facts(self):
             yield Fact(other=1)
             yield Fact(other=2)
 
-        @Rule(OR(Fact(something=1),
-                 Fact(something=2)))
+        @Rule(OR(Fact(something=1), Fact(something=2)))
         def rule1(self):
-            """ First rule, something=1 and something=2"""
+            """First rule, something=1 and something=2"""
             pass
 
     ke_ = Test()
@@ -404,11 +408,11 @@ def test_or_operator():
     from experta import Fact, L
 
     class Test(KnowledgeEngine):
-        """ Test KE """
-        @Rule(OR(Fact(something=L(1)),
-                 Fact(something=L(2))))
+        """Test KE"""
+
+        @Rule(OR(Fact(something=L(1)), Fact(something=L(2))))
         def rule1(self):
-            """ First rule, something=1 and something=2"""
+            """First rule, something=1 and something=2"""
             pass
 
     ke_ = Test()
@@ -438,7 +442,7 @@ def test_ke_inheritance():
         pass
 
     class Base(KnowledgeEngine):
-        @Rule(Person(name=L('pepe')))
+        @Rule(Person(name=L("pepe")))
         def is_pepe(self):
             self.declare(Person(drinks="coffee"))
 
@@ -450,7 +454,7 @@ def test_ke_inheritance():
 
     ke_ = Test()
     ke_.reset()
-    ke_.declare(Person(name='pepe'))
+    ke_.declare(Person(name="pepe"))
     ke_.run()
 
     assert executed
@@ -512,7 +516,7 @@ def test_matching_different_number_of_arguments():
 
 def test_matching_captured_different_facts_AND():
     from experta import Rule
-    from experta import Fact, W, L
+    from experta import Fact, W
     from experta.engine import KnowledgeEngine
 
     class Person(Fact):
@@ -528,8 +532,8 @@ def test_matching_captured_different_facts_AND():
 
     ke_ = Person_KE()
     ke_.reset()
-    ke_.declare(Person(name="NotAName", surname='surname'))
-    ke_.declare(Person(name='name', surname="NotAName"))
+    ke_.declare(Person(name="NotAName", surname="surname"))
+    ke_.declare(Person(name="name", surname="NotAName"))
     ke_.run()
     assert executions == ["NotAName"]
 
@@ -564,7 +568,7 @@ def test_matching_captured_same_facts_AND():
 
     """
     from experta import Rule
-    from experta import Fact, L, W
+    from experta import Fact, W
     from experta.engine import KnowledgeEngine
 
     class Person(Fact):
@@ -573,15 +577,15 @@ def test_matching_captured_same_facts_AND():
     executions = []
 
     class Person_KE(KnowledgeEngine):
-        @Rule(Person(name=W("name"), surname=W('name')))
+        @Rule(Person(name=W("name"), surname=W("name")))
         def same_name(self, name):
             nonlocal executions
             executions.append(name)
 
     ke_ = Person_KE()
     ke_.reset()
-    ke_.declare(Person(name='NotAName', surname="NotAName"))
-    ke_.declare(Person(name='name', surname="NotAName"))
+    ke_.declare(Person(name="NotAName", surname="NotAName"))
+    ke_.declare(Person(name="name", surname="NotAName"))
     ke_.run()
     assert executions == ["NotAName"]
 
@@ -595,7 +599,7 @@ def test_matching_captured_different_facts_NOT_positive():
     NO matches (the NOT is therefore executed).
     """
     from experta import Rule, NOT
-    from experta import Fact, L, W
+    from experta import Fact, W
     from experta.engine import KnowledgeEngine
 
     class Person(Fact):
@@ -604,15 +608,14 @@ def test_matching_captured_different_facts_NOT_positive():
     executions = []
 
     class Person_KE(KnowledgeEngine):
-        @Rule(Person(name=W("name")),
-              NOT(Person(surname=W('name'))))
+        @Rule(Person(name=W("name")), NOT(Person(surname=W("name"))))
         def same_name(self, name):
             nonlocal executions
             executions.append(name)
 
     ke_ = Person_KE()
     ke_.reset()
-    ke_.declare(Person(name='name', surname="NotAName"))
+    ke_.declare(Person(name="name", surname="NotAName"))
     ke_.run()
     assert executions == ["name"]
 
@@ -626,31 +629,6 @@ def test_matching_captured_different_facts_NOT_negative():
     matches (the NOT is therefore not executed).
     """
     from experta import Rule, NOT
-    from experta import Fact, W, L
-    from experta.engine import KnowledgeEngine
-
-    class Person(Fact):
-        pass
-
-    executions = []
-
-    class Person_KE(KnowledgeEngine):
-        @Rule(Person(name=W("name")),
-              NOT(Person(surname=W('name'))))
-        def same_name(self, name):
-            nonlocal executions
-            executions.append(name)
-
-    ke_ = Person_KE()
-    ke_.reset()
-    ke_.declare(Person(name='name', surname="NotAName"))
-    ke_.declare(Person(name='name', surname="name"))
-    ke_.run()
-    assert executions == []
-
-
-def test_and_negated_variable__bad_definition():
-    from experta import Rule, NOT
     from experta import Fact, W
     from experta.engine import KnowledgeEngine
 
@@ -660,8 +638,31 @@ def test_and_negated_variable__bad_definition():
     executions = []
 
     class Person_KE(KnowledgeEngine):
-        @Rule(Person(age=~W('age')),
-              Person(age=W('age')))
+        @Rule(Person(name=W("name")), NOT(Person(surname=W("name"))))
+        def same_name(self, name):
+            nonlocal executions
+            executions.append(name)
+
+    ke_ = Person_KE()
+    ke_.reset()
+    ke_.declare(Person(name="name", surname="NotAName"))
+    ke_.declare(Person(name="name", surname="name"))
+    ke_.run()
+    assert executions == []
+
+
+def test_and_negated_variable__bad_definition():
+    from experta import Rule
+    from experta import Fact, W
+    from experta.engine import KnowledgeEngine
+
+    class Person(Fact):
+        pass
+
+    executions = []
+
+    class Person_KE(KnowledgeEngine):
+        @Rule(Person(age=~W("age")), Person(age=W("age")))
         def same_name(self, age):
             nonlocal executions
             executions.append(age)
@@ -674,7 +675,7 @@ def test_and_negated_variable__bad_definition():
 
 
 def test_and_negated_variable__positive_match():
-    from experta import Rule, NOT
+    from experta import Rule
     from experta import Fact, W
     from experta.engine import KnowledgeEngine
 
@@ -684,8 +685,7 @@ def test_and_negated_variable__positive_match():
     executions = []
 
     class Person_KE(KnowledgeEngine):
-        @Rule(Person(age=W('age')),
-              Person(age=~W('age')))
+        @Rule(Person(age=W("age")), Person(age=~W("age")))
         def same_name(self, age):
             nonlocal executions
             executions.append(age)
@@ -699,7 +699,7 @@ def test_and_negated_variable__positive_match():
 
 
 def test_and_negated_variable__negative_match():
-    from experta import Rule, NOT
+    from experta import Rule
     from experta import Fact, W
     from experta.engine import KnowledgeEngine
 
@@ -709,8 +709,7 @@ def test_and_negated_variable__negative_match():
     executions = []
 
     class Person_KE(KnowledgeEngine):
-        @Rule(Person(age=W('age')),
-              Person(age=~W("age")))
+        @Rule(Person(age=W("age")), Person(age=~W("age")))
         def same_name(self, age):
             nonlocal executions
             executions.append(age)
@@ -737,9 +736,10 @@ def test_not_aggregation():
     executions = []
 
     class Person_KE(KnowledgeEngine):
-        @Rule(NOT(ConflictResolver(resolved=True)),
-              AND(Person(age=W('age')),
-                  Person(age=~W("age"))))
+        @Rule(
+            NOT(ConflictResolver(resolved=True)),
+            AND(Person(age=W("age")), Person(age=~W("age"))),
+        )
         def same_name(self, age):
             nonlocal executions
             executions.append(age)
@@ -747,7 +747,7 @@ def test_not_aggregation():
     ke_ = Person_KE()
     ke_.reset()
     ke_.declare(Person(name="name1", age=18))
-    ke_.declare(Person(name='name2', age=19))
+    ke_.declare(Person(name="name2", age=19))
     ke_.declare(ConflictResolver(resolved=True))
     ke_.run()
     assert executions == []
@@ -756,7 +756,7 @@ def test_not_aggregation():
     ke_ = Person_KE()
     ke_.reset()
     ke_.declare(Person(name="name1", age=18))
-    ke_.declare(Person(name='name2', age=19))
+    ke_.declare(Person(name="name2", age=19))
     ke_.run()
     assert set(executions) == {18, 19}
 
@@ -861,12 +861,12 @@ def test_modify_retracts_and_declare():
     f1 = ke.declare(Fact())
     assert len(ke.facts) == 1
 
-    f2 = ke.modify(f1, _0='test_pos', key='test_key')
+    f2 = ke.modify(f1, _0="test_pos", key="test_key")
     assert f1 != f2
     assert len(ke.facts) == 1
     assert f2.__factid__ in ke.facts
-    assert f2[0] == 'test_pos'
-    assert f2['key'] == 'test_key'
+    assert f2[0] == "test_pos"
+    assert f2["key"] == "test_key"
 
 
 def test_duplicate_declare():
@@ -874,14 +874,14 @@ def test_duplicate_declare():
 
     ke = KnowledgeEngine()
 
-    f1 = ke.declare(Fact(color='red'))
+    f1 = ke.declare(Fact(color="red"))
     assert len(ke.facts) == 1
 
-    f2 = ke.duplicate(f1, color='yellow', blink=True)
+    f2 = ke.duplicate(f1, color="yellow", blink=True)
     assert len(ke.facts) == 2
     assert f2 is not f1
-    assert f2['color'] == 'yellow'
-    assert f2['blink']
+    assert f2["color"] == "yellow"
+    assert f2["blink"]
 
 
 def test_reset_kwargs_are_passed_to_deffacts_named():
@@ -965,30 +965,25 @@ def test_last_activation_is_executed():
     first, second = object(), object()
 
     class KE(KnowledgeEngine):
-        @Rule(
-            Fact(s=True),
-            Fact('A')
-        )
+        @Rule(Fact(s=True), Fact("A"))
         def second(self):
             executed.append(second)
 
-        @Rule(
-            AS.f << Fact(s=False),
-            Fact('A')
-        )
+        @Rule(AS.f << Fact(s=False), Fact("A"))
         def first(self, f):
             executed.append(first)
             self.modify(f, s=True)
 
     ke = KE()
     ke.reset()
-    ke.declare(Fact('A'))
+    ke.declare(Fact("A"))
     ke.declare(Fact(s=False))
     ke.run()
     assert executed == [first, second]
 
+
 def test_last_activation_is_executed_2():
-    from experta import KnowledgeEngine, Rule, Fact, AS, DefFacts
+    from experta import KnowledgeEngine, Rule, Fact, DefFacts
     from experta import NOT, W, MATCH
 
     executed = None
@@ -998,19 +993,19 @@ def test_last_activation_is_executed_2():
         def _initial_action(self):
             yield Fact(action="greet")
 
-        @Rule(Fact(action='greet'),
-              NOT(Fact(name=W())))
+        @Rule(Fact(action="greet"), NOT(Fact(name=W())))
         def ask_name(self):
             self.declare(Fact(name="foo"))
 
-        @Rule(Fact(action='greet'),
-              NOT(Fact(location=W())))
+        @Rule(Fact(action="greet"), NOT(Fact(location=W())))
         def ask_location(self):
             self.declare(Fact(location="bar"))
 
-        @Rule(Fact(action='greet'),
-              Fact(name=MATCH.name),
-              Fact(location=MATCH.location))
+        @Rule(
+            Fact(action="greet"),
+            Fact(name=MATCH.name),
+            Fact(location=MATCH.location),
+        )
         def greet(self, name, location):
             nonlocal executed
             executed = (name, location)

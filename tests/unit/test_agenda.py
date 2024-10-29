@@ -4,10 +4,10 @@ Tests related to the agenda object
 
 
 def test_agenda_has_activations():
-    """ Agenda object has activations property """
+    """Agenda object has activations property"""
 
     from experta.agenda import Agenda
-    from collections import deque
+
     assert hasattr(Agenda(), "activations")
 
 
@@ -18,6 +18,7 @@ def test_agenda_get_next():
     """
 
     from experta.agenda import Agenda
+
     agenda = Agenda()
 
     agenda.activations.append("Foo")

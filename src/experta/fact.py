@@ -1,5 +1,4 @@
 from itertools import chain
-from functools import lru_cache
 import abc
 
 from schema import Schema
@@ -90,7 +89,7 @@ class Fact(OperableCE, Bindable, dict, metaclass=Validable):
             if name in self:
                 try:
                     field.validate(self[name])
-                except Exception as exc:
+                except Exception:
                     raise ValueError(
                         "Invalid value on field %r for fact %r"
                         % (name, self))

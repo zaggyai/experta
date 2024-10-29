@@ -1,3 +1,5 @@
+from itertools import chain
+
 from experta.conditionalelement import ConditionalElement
 from experta.pattern import Bindable
 

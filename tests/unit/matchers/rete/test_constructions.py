@@ -7,7 +7,7 @@ def test_self_referencing_fact():
     result = []
 
     class Test(KnowledgeEngine):
-        @Rule(Fact(a=W('X'), b=W('X')))
+        @Rule(Fact(a=W("X"), b=W("X")))
         def rule1(self, X):
             nonlocal result
             result.append(X)
@@ -30,7 +30,7 @@ def test_self_referencing_fact_with_negation():
     result = []
 
     class Test(KnowledgeEngine):
-        @Rule(Fact(a=W('X'), b=~W('X')))
+        @Rule(Fact(a=W("X"), b=~W("X")))
         def rule1(self, X):
             nonlocal result
             result.append(X)
@@ -78,7 +78,7 @@ def test_initial_not_vs_and_not():
         @Rule(Fact(a=1) & ~Fact(b=2))
         def test_fact_before_not(self):
             nonlocal executions
-            executions +=1
+            executions += 1
 
     t = Test()
     t.reset()
@@ -101,7 +101,7 @@ def test_initial_not_vs_and_not():
         @Rule(~Fact(b=2) & Fact(a=1))
         def test_fact_after_not(self):
             nonlocal executions
-            executions +=1
+            executions += 1
 
     t = Test()
     t.reset()
@@ -122,9 +122,7 @@ def test_TEST_1():
     executed = Counter()
 
     class Test(KnowledgeEngine):
-        @Rule(Fact("a" << W()),
-              Fact("b" << W()),
-              TEST(lambda a, b: a > b))
+        @Rule(Fact("a" << W()), Fact("b" << W()), TEST(lambda a, b: a > b))
         def is_greater(self, a, b):
             nonlocal executed
             executed[(a, b)] += 1
@@ -150,11 +148,13 @@ def test_TEST_2():
     executed = Counter()
 
     class Test(KnowledgeEngine):
-        @Rule(Fact("a" << W()),
-              Fact("b" << W()),
-              TEST(lambda a, b: a > b),
-              Fact("c" << W()),
-              TEST(lambda b, c: b > c))
+        @Rule(
+            Fact("a" << W()),
+            Fact("b" << W()),
+            TEST(lambda a, b: a > b),
+            Fact("c" << W()),
+            TEST(lambda b, c: b > c),
+        )
         def is_greater(self, a, b, c):
             nonlocal executed
             executed[(a, b, c)] += 1
@@ -176,14 +176,12 @@ def test_TEST_2():
 
 
 def test_TEST_3():
-    from collections import Counter
     from experta import KnowledgeEngine, Rule, Fact, TEST, W
 
     executed = 0
 
     class Test(KnowledgeEngine):
-        @Rule(Fact("a" << W()),
-              TEST(lambda a: isinstance(a, int)))
+        @Rule(Fact("a" << W()), TEST(lambda a: isinstance(a, int)))
         def is_number(self, a):
             nonlocal executed
             executed += 1
@@ -191,7 +189,7 @@ def test_TEST_3():
     t = Test()
     f1 = Fact(1)
     f2 = Fact(2)
-    f3 = Fact('a')
+    f3 = Fact("a")
     t.reset()
     t.declare(f1, f2, f3)
     t.run()
@@ -200,8 +198,7 @@ def test_TEST_3():
 
 
 def test_TEST_4():
-    from collections import Counter
-    from experta import KnowledgeEngine, Rule, Fact, TEST, W
+    from experta import KnowledgeEngine, Rule, Fact, TEST
 
     executed = 0
 
@@ -250,9 +247,13 @@ def test_FORALL_1():
     executed = 0
 
     class Test(KnowledgeEngine):
-        @Rule(FORALL(Fact(key_a="k" << W()),
-                     Fact(key_b="k" << W()),
-                     Fact(key_c="k" << W())))
+        @Rule(
+            FORALL(
+                Fact(key_a="k" << W()),
+                Fact(key_b="k" << W()),
+                Fact(key_c="k" << W()),
+            )
+        )
         def any_fact_once(self):
             nonlocal executed
             executed += 1
@@ -288,20 +289,20 @@ def test_fact_capture():
     executed = None
 
     class KE(KnowledgeEngine):
-        @Rule('myfact' << Fact())
+        @Rule("myfact" << Fact())
         def r1(self, myfact):
             nonlocal executed
             executed = myfact
 
     ke = KE()
     ke.reset()
-    f1 = ke.declare(Fact('data'))
+    f1 = ke.declare(Fact("data"))
     ke.run()
     assert executed is f1
 
 
 def test_OR_not_allow_inside_FORALL_nor_EXISTS():
-    from experta import KnowledgeEngine, Fact, Rule, FORALL, EXISTS, OR
+    from experta import KnowledgeEngine, Fact, Rule, EXISTS, OR
 
     class KE(KnowledgeEngine):
         @Rule(EXISTS(OR(Fact(), Fact())))
@@ -324,8 +325,7 @@ def test_ANDNOT_reactivation():
     from experta import KnowledgeEngine, Fact, Rule, NOT, W
 
     class KE(KnowledgeEngine):
-        @Rule(Fact(x='x' << W()),
-              NOT(Fact(y='x' << W())))
+        @Rule(Fact(x="x" << W()), NOT(Fact(y="x" << W())))
         def r1(self):
             pass
 
@@ -339,10 +339,10 @@ def test_ANDNOT_reactivation():
     ke.retract(f1)
     assert not ke.agenda.activations
 
-    f2 = ke.declare(Fact(y=1))
+    ke.declare(Fact(y=1))
     assert not ke.agenda.activations
 
-    f3 = ke.declare(Fact(x=1))
+    ke.declare(Fact(x=1))
     assert not ke.agenda.activations
 
     f4 = ke.declare(Fact(x=2))
@@ -356,11 +356,7 @@ def test_OR_inside_Rule():
     from experta import KnowledgeEngine, OR, Fact, Rule
 
     class KE(KnowledgeEngine):
-        @Rule(Fact(1),
-              OR(Fact('a'),
-                 Fact('b')),
-              OR(Fact('x'),
-                 Fact('y')))
+        @Rule(Fact(1), OR(Fact("a"), Fact("b")), OR(Fact("x"), Fact("y")))
         def r1(self):
             pass
 
@@ -371,28 +367,28 @@ def test_OR_inside_Rule():
     p0 = ke.declare(Fact(1))
     assert len(ke.agenda.activations) == 0
 
-    p1 = ke.declare(Fact('a'))
+    p1 = ke.declare(Fact("a"))
     assert len(ke.agenda.activations) == 0
 
-    p2 = ke.declare(Fact('x'))
+    p2 = ke.declare(Fact("x"))
     assert len(ke.agenda.activations) == 1
 
     ke.retract(p2)
     assert len(ke.agenda.activations) == 0
 
-    p2 = ke.declare(Fact('y'))
+    p2 = ke.declare(Fact("y"))
     assert len(ke.agenda.activations) == 1
 
     ke.retract(p1)
     assert len(ke.agenda.activations) == 0
 
-    p1 = ke.declare(Fact('b'))
+    p1 = ke.declare(Fact("b"))
     assert len(ke.agenda.activations) == 1
 
     ke.retract(p2)
     assert len(ke.agenda.activations) == 0
 
-    p2 = ke.declare(Fact('x'))
+    p2 = ke.declare(Fact("x"))
     assert len(ke.agenda.activations) == 1
 
     ke.retract(p0)
@@ -411,10 +407,10 @@ def test_nested_values_dict():
     ke.reset()
     assert len(ke.agenda.activations) == 0
 
-    p0 = ke.declare(Fact(key={"with": {"dicts": 1}}))
+    ke.declare(Fact(key={"with": {"dicts": 1}}))
     assert len(ke.agenda.activations) == 0
 
-    p1 = ke.declare(Fact(key={"with": {"nested": {"dicts": 1}}}))
+    ke.declare(Fact(key={"with": {"nested": {"dicts": 1}}}))
     assert len(ke.agenda.activations) == 1
 
 
@@ -430,8 +426,12 @@ def test_nested_values_dict_and_lists():
     ke.reset()
     assert len(ke.agenda.activations) == 0
 
-    p0 = ke.declare(Fact(key={"with": {"nested": [{"other": 1}, {"dicts": 1}]}}))
+    ke.declare(
+        Fact(key={"with": {"nested": [{"other": 1}, {"dicts": 1}]}})
+    )
     assert len(ke.agenda.activations) == 0
 
-    p1 = ke.declare(Fact(key=[{"with": {"nested": [{"other": 1}, {"dicts": 1}]}}]))
+    ke.declare(
+        Fact(key=[{"with": {"nested": [{"other": 1}, {"dicts": 1}]}}])
+    )
     assert len(ke.agenda.activations) == 1

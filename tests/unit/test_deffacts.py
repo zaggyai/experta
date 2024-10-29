@@ -1,9 +1,10 @@
 import pytest
+from experta import Fact
 
 
 def test_deffacts_module_exists():
     try:
-        from experta import deffacts
+        from experta import deffacts  # noqa: F401
     except ImportError as exc:
         assert False, exc
 
@@ -11,7 +12,7 @@ def test_deffacts_module_exists():
 def test_deffacts_class_exists():
     from experta import deffacts
 
-    assert hasattr(deffacts, 'DefFacts')
+    assert hasattr(deffacts, "DefFacts")
 
 
 def test_deffacts_can_decorate_generator():
@@ -50,6 +51,7 @@ def test_deffacts_does_not_accept_non_generators():
     from experta import DefFacts, Fact
 
     with pytest.raises(TypeError):
+
         @DefFacts()
         def mygenerator():
             return Fact()
@@ -71,6 +73,7 @@ def test_deffacts_without_parenthesis():
     from experta import DefFacts
 
     with pytest.raises(SyntaxError):
+
         @DefFacts
         def mygenerator(self):
             yield Fact()

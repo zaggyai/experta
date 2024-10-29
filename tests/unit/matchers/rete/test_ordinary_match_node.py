@@ -3,7 +3,7 @@ import pytest
 
 def test_ordinarymatchnode_exists():
     try:
-        from experta.matchers.rete.nodes import OrdinaryMatchNode
+        from experta.matchers.rete.nodes import OrdinaryMatchNode  # noqa: F401
     except ImportError as exc:
         assert False, exc
 
@@ -19,10 +19,10 @@ def test_ordinarymatchnode_accepts_callable():
     from experta.matchers.rete.nodes import OrdinaryMatchNode
 
     # MUST NOT RAISE
-    OrdinaryMatchNode(lambda l, r: True)
+    OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
 
     with pytest.raises(TypeError):
-        OrdinaryMatchNode('NONCALLABLE')
+        OrdinaryMatchNode("NONCALLABLE")
 
 
 def test_ordinarymatchnode_left_activate_valid_store_in_left_memory():
@@ -30,11 +30,11 @@ def test_ordinarymatchnode_left_activate_valid_store_in_left_memory():
     from experta.matchers.rete.token import Token, TokenInfo
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
 
     assert not omn.left_memory
 
-    fact = Fact(test='data')
+    fact = Fact(test="data")
     token = Token.valid(fact)
     omn.activate_left(token)
 
@@ -43,32 +43,32 @@ def test_ordinarymatchnode_left_activate_valid_store_in_left_memory():
 
 def test_ordinarymatchnode_left_activate_valid_build_new_tokens(TestNode):
     from experta.matchers.rete.nodes import OrdinaryMatchNode
-    from experta.matchers.rete.token import Token, TokenInfo
+    from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
     tn1 = TestNode()
     tn2 = TestNode()
     omn.add_child(tn1, tn1.activate)
     omn.add_child(tn2, tn2.activate)
 
-    rt1 = Token.valid(Fact(rightdata='rightdata1'))
-    rt2 = Token.valid(Fact(rightdata='rightdata2'))
+    rt1 = Token.valid(Fact(rightdata="rightdata1"))
+    rt2 = Token.valid(Fact(rightdata="rightdata2"))
     omn.right_memory.append(rt1.to_info())
     omn.right_memory.append(rt2.to_info())
 
-    token = Token.valid(Fact(leftdata='leftdata'))
+    token = Token.valid(Fact(leftdata="leftdata"))
     omn.activate_left(token)
 
-    assert tn1.added == [Token.valid([Fact(leftdata='leftdata'),
-                                      Fact(rightdata='rightdata1')]),
-                         Token.valid([Fact(leftdata='leftdata'),
-                                      Fact(rightdata='rightdata2')])]
+    assert tn1.added == [
+        Token.valid([Fact(leftdata="leftdata"), Fact(rightdata="rightdata1")]),
+        Token.valid([Fact(leftdata="leftdata"), Fact(rightdata="rightdata2")]),
+    ]
 
-    assert tn2.added == [Token.valid([Fact(leftdata='leftdata'),
-                                      Fact(rightdata='rightdata1')]),
-                         Token.valid([Fact(leftdata='leftdata'),
-                                      Fact(rightdata='rightdata2')])]
+    assert tn2.added == [
+        Token.valid([Fact(leftdata="leftdata"), Fact(rightdata="rightdata1")]),
+        Token.valid([Fact(leftdata="leftdata"), Fact(rightdata="rightdata2")]),
+    ]
 
 
 def test_ordinarymatchnode_left_activate_invalid_remove_from_left_memory():
@@ -76,9 +76,9 @@ def test_ordinarymatchnode_left_activate_invalid_remove_from_left_memory():
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
 
-    fact = Fact(test='data')
+    fact = Fact(test="data")
     token = Token.valid(fact)
     omn.left_memory.append(token.to_info())
 
@@ -92,29 +92,37 @@ def test_ordinarymatchnode_left_activate_invalid_build_new_tokens(TestNode):
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
     tn1 = TestNode()
     tn2 = TestNode()
     omn.add_child(tn1, tn1.activate)
     omn.add_child(tn2, tn2.activate)
 
-    rt1 = Token.valid(Fact(rightdata='rightdata1'))
-    rt2 = Token.valid(Fact(rightdata='rightdata2'))
+    rt1 = Token.valid(Fact(rightdata="rightdata1"))
+    rt2 = Token.valid(Fact(rightdata="rightdata2"))
     omn.right_memory.append(rt1.to_info())
     omn.right_memory.append(rt2.to_info())
 
-    token = Token.invalid(Fact(leftdata='leftdata'))
+    token = Token.invalid(Fact(leftdata="leftdata"))
     omn.activate_left(token)
 
-    assert tn1.added == [Token.invalid([Fact(leftdata='leftdata'),
-                                        Fact(rightdata='rightdata1')]),
-                         Token.invalid([Fact(leftdata='leftdata'),
-                                        Fact(rightdata='rightdata2')])]
+    assert tn1.added == [
+        Token.invalid(
+            [Fact(leftdata="leftdata"), Fact(rightdata="rightdata1")]
+        ),
+        Token.invalid(
+            [Fact(leftdata="leftdata"), Fact(rightdata="rightdata2")]
+        ),
+    ]
 
-    assert tn2.added == [Token.invalid([Fact(leftdata='leftdata'),
-                                        Fact(rightdata='rightdata1')]),
-                         Token.invalid([Fact(leftdata='leftdata'),
-                                        Fact(rightdata='rightdata2')])]
+    assert tn2.added == [
+        Token.invalid(
+            [Fact(leftdata="leftdata"), Fact(rightdata="rightdata1")]
+        ),
+        Token.invalid(
+            [Fact(leftdata="leftdata"), Fact(rightdata="rightdata2")]
+        ),
+    ]
 
 
 def test_ordinarymatchnode_right_activate_valid_store_in_right_memory():
@@ -122,11 +130,11 @@ def test_ordinarymatchnode_right_activate_valid_store_in_right_memory():
     from experta.matchers.rete.token import Token, TokenInfo
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
 
     assert not omn.right_memory
 
-    fact = Fact(test='data')
+    fact = Fact(test="data")
     token = Token.valid(fact)
     omn.activate_right(token)
 
@@ -138,29 +146,29 @@ def test_ordinarymatchnode_right_activate_valid_build_new_tokens(TestNode):
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
     tn1 = TestNode()
     tn2 = TestNode()
     omn.add_child(tn1, tn1.activate)
     omn.add_child(tn2, tn2.activate)
 
-    lt1 = Token.valid(Fact(leftdata='leftdata1'))
-    lt2 = Token.valid(Fact(leftdata='leftdata2'))
+    lt1 = Token.valid(Fact(leftdata="leftdata1"))
+    lt2 = Token.valid(Fact(leftdata="leftdata2"))
     omn.left_memory.append(lt1.to_info())
     omn.left_memory.append(lt2.to_info())
 
-    token = Token.valid(Fact(rightdata='rightdata'))
+    token = Token.valid(Fact(rightdata="rightdata"))
     omn.activate_right(token)
 
-    assert tn1.added == [Token.valid([Fact(rightdata='rightdata'),
-                                      Fact(leftdata='leftdata1')]),
-                         Token.valid([Fact(rightdata='rightdata'),
-                                      Fact(leftdata='leftdata2')])]
+    assert tn1.added == [
+        Token.valid([Fact(rightdata="rightdata"), Fact(leftdata="leftdata1")]),
+        Token.valid([Fact(rightdata="rightdata"), Fact(leftdata="leftdata2")]),
+    ]
 
-    assert tn2.added == [Token.valid([Fact(rightdata='rightdata'),
-                                      Fact(leftdata='leftdata1')]),
-                         Token.valid([Fact(rightdata='rightdata'),
-                                      Fact(leftdata='leftdata2')])]
+    assert tn2.added == [
+        Token.valid([Fact(rightdata="rightdata"), Fact(leftdata="leftdata1")]),
+        Token.valid([Fact(rightdata="rightdata"), Fact(leftdata="leftdata2")]),
+    ]
 
 
 def test_ordinarymatchnode_right_activate_invalid_remove_from_right_memory():
@@ -168,9 +176,9 @@ def test_ordinarymatchnode_right_activate_invalid_remove_from_right_memory():
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
 
-    fact = Fact(test='data')
+    fact = Fact(test="data")
     token = Token.valid(fact)
     omn.right_memory.append(token.to_info())
 
@@ -184,26 +192,34 @@ def test_ordinarymatchnode_right_activate_invalid_build_new_tokens(TestNode):
     from experta.matchers.rete.token import Token
     from experta.fact import Fact
 
-    omn = OrdinaryMatchNode(lambda l, r: True)
+    omn = OrdinaryMatchNode(lambda l, r: True)  # noqa: E741
     tn1 = TestNode()
     tn2 = TestNode()
     omn.add_child(tn1, tn1.activate)
     omn.add_child(tn2, tn2.activate)
 
-    rt1 = Token.valid(Fact(leftdata='leftdata1'))
-    rt2 = Token.valid(Fact(leftdata='leftdata2'))
+    rt1 = Token.valid(Fact(leftdata="leftdata1"))
+    rt2 = Token.valid(Fact(leftdata="leftdata2"))
     omn.left_memory.append(rt1.to_info())
     omn.left_memory.append(rt2.to_info())
 
-    token = Token.invalid(Fact(rightdata='rightdata'))
+    token = Token.invalid(Fact(rightdata="rightdata"))
     omn.activate_right(token)
 
-    assert tn1.added == [Token.invalid([Fact(rightdata='rightdata'),
-                                        Fact(leftdata='leftdata1')]),
-                         Token.invalid([Fact(rightdata='rightdata'),
-                                        Fact(leftdata='leftdata2')])]
+    assert tn1.added == [
+        Token.invalid(
+            [Fact(rightdata="rightdata"), Fact(leftdata="leftdata1")]
+        ),
+        Token.invalid(
+            [Fact(rightdata="rightdata"), Fact(leftdata="leftdata2")]
+        ),
+    ]
 
-    assert tn2.added == [Token.invalid([Fact(rightdata='rightdata'),
-                                        Fact(leftdata='leftdata1')]),
-                         Token.invalid([Fact(rightdata='rightdata'),
-                                        Fact(leftdata='leftdata2')])]
+    assert tn2.added == [
+        Token.invalid(
+            [Fact(rightdata="rightdata"), Fact(leftdata="leftdata1")]
+        ),
+        Token.invalid(
+            [Fact(rightdata="rightdata"), Fact(leftdata="leftdata2")]
+        ),
+    ]

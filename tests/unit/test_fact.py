@@ -1,19 +1,18 @@
 from unittest.mock import MagicMock
 
 import pytest
-
-from experta.fact import Fact, Field
 from experta.engine import KnowledgeEngine
+from experta.fact import Fact, Field
 
 
 def test_fact_mix_positional_and_kw_index():
-    f = Fact('x', 'y', 'z', a=1, b=2)
+    f = Fact("x", "y", "z", a=1, b=2)
 
-    assert f[0] == 'x'
-    assert f[1] == 'y'
-    assert f[2] == 'z'
-    assert f['a'] == 1
-    assert f['b'] == 2
+    assert f[0] == "x"
+    assert f[1] == "y"
+    assert f[2] == "z"
+    assert f["a"] == 1
+    assert f["b"] == 2
 
 
 def test_fact_freeze_mutable_values():
@@ -116,7 +115,7 @@ def test_fields_are_not_present_in_class():
     class MockFact(Fact):
         myfield = Field(int)
 
-    assert not hasattr(MockFact, 'myfield')
+    assert not hasattr(MockFact, "myfield")
 
 
 def test_fields_are_not_present_in_instance():
@@ -125,7 +124,7 @@ def test_fields_are_not_present_in_instance():
 
     obj = MockFact()
 
-    assert not hasattr(obj, 'myfield')
+    assert not hasattr(obj, "myfield")
 
 
 def test_fields_are_inherited():

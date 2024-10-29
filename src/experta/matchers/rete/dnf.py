@@ -3,7 +3,7 @@ Rewrite engine to get disjuntive normal form of the rules
 """
 from collections import OrderedDict
 from functools import singledispatch
-from itertools import chain, product
+from itertools import product
 
 from experta.conditionalelement import AND, OR, NOT
 from experta.fieldconstraint import ORFC, NOTFC, ANDFC

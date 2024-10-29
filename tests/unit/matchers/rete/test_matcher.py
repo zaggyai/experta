@@ -1,11 +1,9 @@
-import pytest
-
 from experta import abstract
 
 
 def test_retematcher_exists():
     try:
-        from experta.matchers.rete import ReteMatcher
+        from experta.matchers.rete import ReteMatcher  # noqa: F401
     except ImportError as exc:
         assert False, exc
 
@@ -30,7 +28,7 @@ def test_retematcher_has_root_node():
     from experta.matchers.rete.nodes import BusNode
 
     matcher = ReteMatcher(KnowledgeEngine())
-    assert hasattr(matcher, 'root_node')
+    assert hasattr(matcher, "root_node")
     assert isinstance(matcher.root_node, BusNode)
 
 
@@ -52,8 +50,7 @@ def test_retematcher_changes_are_propagated(TestNode):
     f3 = Fact(__factid__=3)
     f4 = Fact(__factid__=4)
 
-    matcher.changes(adding=[f1, f2],
-                    deleting=[f3, f4])
+    matcher.changes(adding=[f1, f2], deleting=[f3, f4])
 
     assert Token.valid(f1) in tn1.added
     assert Token.valid(f1) in tn2.added
@@ -78,8 +75,9 @@ def test_retematcher_changes_return_activations_if_csn():
     csn = ConflictSetNode(rule)
     matcher.root_node.add_child(csn, csn.activate)
 
-    added, removed = matcher.changes(adding=[Fact(__factid__=1),
-                                             Fact(__factid__=2)])
+    added, removed = matcher.changes(
+        adding=[Fact(__factid__=1), Fact(__factid__=2)]
+    )
 
     assert len(added) == 2
     assert all(isinstance(a, Activation) for a in added)
