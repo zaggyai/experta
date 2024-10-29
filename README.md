@@ -40,5 +40,8 @@ Be cautious because light is blinking-yellow
 
 ## Examples
 
+
 You can find some more examples on
 [GitHub](https://github.com/nilp0inter/experta/tree/develop/docs).
+
+More yet in the [documentation](https://experta.readthedocs.io/en/latest/).
