@@ -283,13 +283,14 @@ def test_FORALL_1():
     assert executed == 3
 
 
+# todo This might have been deprecated in the old codebase; need to confirm
 def test_fact_capture():
     from experta import KnowledgeEngine, Rule, Fact
 
     executed = None
 
     class KE(KnowledgeEngine):
-        @Rule("myfact" << Fact())
+        @Rule("myfact" << Fact("data"))
         def r1(self, myfact):
             nonlocal executed
             executed = myfact
